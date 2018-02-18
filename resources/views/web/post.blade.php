@@ -3,23 +3,29 @@
 @section('content')
 <div class="container">
     <div class="col-md-8 col-md-offset-2">
-        <h1>Lista de artículos</h1>
+        <h1>{{ $post->name }}}</h1>
 
-        @foreach($posts as $post)
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{ $post->name }}        
+                Categoría
+                <!-- se llama a metodo category() de Post -->
+                <a href="#">{{ $post->category->name }}</a>      
             </div>
             <div class="panel-body">
                 @if ($post->file)
                     <img src="{{ $post->file }}" class="img-responsive">
                 @endif
                 {{ $post->excerpt }} <!-- Extracto del post. Al presionar sobre el link permite ver detalles --> 
-                <a href="{{ route('post', $post->slug) }}" class="pull-right">Leer más</a>
+                <hr>
+                <!-- notacion para poner codigo html (no queremos escapar ese codigo) -->
+                {{!! $post->body !!}}
+                <hr>
+                Etiquetas
+                @foreach($post->tags as $tag) <!-- se llama metodo tags() de Post -->
+                    <a href="#">{{ $tag->name }}</a>
+                @endforeach
             </div>
         </div>
-        @endforeach
-        {{ $posts->render() }} <!-- Genera botones de paginacion (variable coleccion en plural) -->
     </div>
 </div>
 @endsection

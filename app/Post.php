@@ -23,4 +23,9 @@ class Post extends Model
     public function category() {
         return $this->belongsTo(Category::class);
     }
+
+    //funcion de relacion de 1 post con varias etiquetas (relacion N-N)
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
+    }
 }

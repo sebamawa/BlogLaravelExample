@@ -29,6 +29,7 @@ class User extends Authenticatable
 
     //funciones de relaciones de entidades (tablas)
 
+    //1 usuario tiene muchos posts (relacion 1-N)
     public function posts() {
         //un usuario puede tener (n) muchos posts
         return $this->hasMany(Post::class);

@@ -13,8 +13,8 @@ class Category extends Model
 
     //funciones de relaciones de entidades (tablas)
 
+    //una categoria puede tener (n) muchos posts (relacion 1-N)
     public function posts() {
-        //una categoria puede tener (n) muchos posts
         return $this->hasMany(Post::class);
     }
 

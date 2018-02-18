@@ -18,4 +18,10 @@ Route::redirect('/', 'blog');
 
 Auth::routes();
 
-Route::get('/blog', 'Web\PageController@blog')->name('blog');
+//muestra listado de posts
+Route::get('/blog', 'Web\PageController@blog')->name('blog'); //la ruta se va a llamar blog
+
+//permite ver detalles de un post particular al presionar el link 'Leer mas' de la view
+//recibe parametro 'slug'
+Route::get('/blog/{slug}', 'Web\PageController@post')->name('post');
+
