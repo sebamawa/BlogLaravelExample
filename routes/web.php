@@ -11,10 +11,11 @@
 |
 */
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
+Route::redirect('/', 'blog');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/blog', 'Web\PageController@blog')->name('blog');

@@ -12,6 +12,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- css bootstrap -->
+    <link href="{{asset('cssBootstap/bootstrap.min.css')}}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -76,5 +79,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <!-- js bootstrap -->
+    <script src="{{asset('jsBootstrap/jquery-3.3.1.min.js')}}"></script> 
+    <script src="{{asset('jsBootstrap/bootstrap.min.js')}}"></script>    
 </body>
 </html>
