@@ -9,8 +9,8 @@
         <select style="max-height:90%;" onchange="javascript:location.href = this.value;">
             <option value="" disabled selected>Elige una categoría</option>
          
-        @foreach(session('categories') as $category)
-            <option value="{{ route('category', $category->slug) }}">{{ $category->name }}</option>
+        @foreach(session('categories') as $cat)
+            <option value="{{ route('category', $cat->slug) }}">{{ $cat->name }}</option>
         @endforeach
         </select>
         
