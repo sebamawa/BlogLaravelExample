@@ -11,11 +11,27 @@ use App\Tag;
 
 class PageController extends Controller
 {
+    public $categories;  //= Category::get();
+
+    public function __construct() {
+        if (empty(session('categories'))) {
+            $this->categories = Category::all();
+            //$this->$categories = $cats; //Category::get();
+            session(['categories' => $this->categories]);
+        } else {
+            $this->categories = session('categories');
+        }
+    }
+
     //pasa a la view listado de posts
     public function blog() {
         $posts = Post::orderBy('id', 'DESC')->where('status', 'PUBLISHED')->paginate(3);
 
-        return view('web.posts', compact('posts')); //uso helper view()
+        //$categories = Category::get();
+        //$categories = session('categories');
+
+        //return view('web.posts', compact('posts')); //uso helper view()
+        return view('web.posts', ['posts'=>$posts, 'categories'=>$this->categories]);
     }
 
     //permite ver detalles de un post particular segun el parametro slug

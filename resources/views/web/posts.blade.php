@@ -3,15 +3,28 @@
 @section('content')
 <div class="container">
     <div class="col-md-8 col-md-offset-2">
-        <h1>Lista de artículos</h1>
+        <h1>Lista de artículos publicados</h1>
+
+        {{-- select para filtrar por categoria --}}
+        <select style="max-height:90%;" onchange="javascript:location.href = this.value;">
+            <option value="" disabled selected>Elige una categoría</option>
+         
+        @foreach(session('categories') as $category)
+            <option value="{{ route('category', $category->slug) }}">{{ $category->name }}</option>
+        @endforeach
+        </select>
+        
         {{-- si se fitro por categoria muestro la categoria de filtro --}}
         @if (!empty($category))
             <h4>Filtro por categoría: {{ $category->name }}</h4>
         @endif  
+        
         {{-- si se fitro por tag muestro el tag de filtro --}}
         @if (!empty($tag))
             <h4>Filtro por etiqueta: {{ $tag->name }}</h4>
-        @endif    
+        @endif   
+        
+        <br>
 
         {{-- itero sobre los posts --}}
         @foreach($posts as $post)
