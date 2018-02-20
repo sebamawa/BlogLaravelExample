@@ -12,6 +12,8 @@ class Post extends Model
     ];
 
     //funciones de relaciones de entidades (tablas)
+    //Las relaciones en Eloquent (ORM) son definidas como metodos en las clases de los modelos,
+    //de esta forma los modelos quedan relacionados de igual forma que las tablas fisicas de la bd
 
     //funcion ('de relacion') para definir en Laravel que un post tiene un usuario (un post esta asociado a un usuario)
     //observar que como solo tiene 1 usuario, va en singular 

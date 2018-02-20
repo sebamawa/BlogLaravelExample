@@ -10,7 +10,9 @@ class Tag extends Model
         'name', 'slug'
     ];
 
-    //funciones de relaciones de entidades (tablas)    
+    //funciones de relaciones de entidades (tablas)
+    //Las relaciones en Eloquent (ORM) son definidas como metodos en las clases de los modelos,
+    //de esta forma los modelos quedan relacionados de igual forma que las tablas fisicas de la bd
 
     //1 etiqueta tiene muchos posts (relacion N-N)
     public function post() {

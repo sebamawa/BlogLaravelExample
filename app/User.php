@@ -28,6 +28,8 @@ class User extends Authenticatable
     ];
 
     //funciones de relaciones de entidades (tablas)
+    //Las relaciones en Eloquent (ORM) son definidas como metodos en las clases de los modelos,
+    //de esta forma los modelos quedan relacionados de igual forma que las tablas fisicas de la bd
 
     //1 usuario tiene muchos posts (relacion 1-N)
     public function posts() {

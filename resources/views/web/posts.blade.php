@@ -1,10 +1,19 @@
-@extends('layouts.app') <!-- Extiendo plantilla por default de Laravel -->
+@extends('layouts.app') {{-- Extiendo plantilla por default de Laravel --}}
 
 @section('content')
 <div class="container">
     <div class="col-md-8 col-md-offset-2">
         <h1>Lista de artículos</h1>
+        {{-- si se fitro por categoria muestro la categoria de filtro --}}
+        @if (!empty($category))
+            <h4>Filtro por categoría: {{ $category->name }}</h4>
+        @endif  
+        {{-- si se fitro por tag muestro el tag de filtro --}}
+        @if (!empty($tag))
+            <h4>Filtro por etiqueta: {{ $tag->name }}</h4>
+        @endif    
 
+        {{-- itero sobre los posts --}}
         @foreach($posts as $post)
         <div class="panel panel-default">
             <div class="panel-heading">
