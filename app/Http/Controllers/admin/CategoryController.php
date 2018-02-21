@@ -1,11 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+use App\Category;
 
 class CategoryController extends Controller
 {
+
+    public function __construct() {
+        //seguridad para TODOS los metodos (solo se permite acceso a usuario logeuado)
+        $this->middleware('auth'); 
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return 'index de CategoryController';
     }
 
     /**

@@ -18,7 +18,7 @@ Route::redirect('/', 'blog');
 
 Auth::routes();
 
-//** Web (rutas para clientes (quienes ven los articulos)) **//
+//*************** Web (rutas para clientes (invitados)) ********************//
 
 //muestra listado de posts
 Route::get('/blog', 'Web\PageController@blog')->name('blog'); //la ruta se va a llamar blog
@@ -43,7 +43,9 @@ Route::get('/categoria/{slug}', 'Web\PageController@category')->name('category')
 //ruta para filtrado por etiquetas (al presionar link de etiqueta de un post en su detalle )
 Route::get('/etiqueta/{slug}', 'Web\PageController@tag')->name('tag');
 
-//** Admin (rutas para la parte adminsitrativa) **/
+//*************************** Admin (rutas para la parte adminsitrativa) ***************************/
+
+//crds de tags, categorias y posts
 Route::resource('tags', 'Admin\TagController');
 Route::resource('categories', 'Admin\CategoryController');
 Route::resource('posts', 'Admin\PostController');

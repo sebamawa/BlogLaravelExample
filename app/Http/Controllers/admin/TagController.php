@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Tag;
+use App\Http\Requests\TagStoreRequest;
+use App\Http\Requests\TagUpdateRequest;
 
 class TagController extends Controller
 {
@@ -44,8 +46,10 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) //metodo para salvar datos
+    public function store(TagStoreRequest $request) //metodo para salvar datos
     {
+        //validacion de campos con request
+
         $tag = Tag::create($request->all()); //se aceptan datos definidos en el modelo Tag, en array fillable
         
         return redirect()->route('tags.edit', $tag->id)
@@ -85,8 +89,10 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) //atualiza datos de bd
+    public function update(TatUpdateRequest $request, $id) //atualiza datos de bd
     {
+        //validacion de campos con request
+
         $tag = Tag::find($id);
 
         $tag->fill($request->all)->save();
