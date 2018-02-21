@@ -14,13 +14,9 @@ class PageController extends Controller
     public $categories;  //= Category::get();
 
     public function __construct() {
-        if (empty(session('categories'))) {
-            $this->categories = Category::all();
-            //$this->$categories = $cats; //Category::get();
-            session(['categories' => $this->categories]);
-        } else {
-            $this->categories = session('categories');
-        }
+        //se hace la consulta para obtener la categorias cada vez que se llama a un
+        //metodo de este controlador. Optimizacion: guardar categorias en sesion (ver web.php)
+        $this->categories = Category::all();
     }
 
     //pasa a la view listado de posts
@@ -31,7 +27,7 @@ class PageController extends Controller
         //$categories = session('categories');
 
         //return view('web.posts', compact('posts')); //uso helper view()
-        return view('web.posts', ['posts'=>$posts, 'categories'=>$this->categories]);
+        return view('web.posts', ['posts' => $posts, 'categories'=>$this->categories]);
     }
 
     //permite ver detalles de un post particular segun el parametro slug
@@ -54,7 +50,7 @@ class PageController extends Controller
             ->paginate(3);
 
             //parmetros a la view: coleccion de posts filtrados por categoria y categoria de filtro
-            return  view('web.posts', ['posts'=>$posts, 'category'=>$category]);    
+            return  view('web.posts', ['posts'=>$posts, 'category'=>$category, 'categories'=>$this->categories]);    
     }
 
     //filtra los posts por tag seleccionada en la vista de detalle
@@ -69,6 +65,10 @@ class PageController extends Controller
         ->orderBy('id', 'DESC') //se puede intercambiar el orden de where y orderBy
         ->paginate(3);
 
-        return  view('web.posts', ['posts'=>$posts, 'tag'=>$tag]);//compact('posts'));    
-    }    
+        return  view('web.posts', ['posts'=>$posts, 'tag'=>$tag, 'categories'=>$this->categories]);//compact('posts'));    
+    }  
+    
+    public function prueba() {
+        return 'metodo prueba()';
+    }
 }

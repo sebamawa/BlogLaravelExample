@@ -1,5 +1,5 @@
 <?php
-
+//use App\Category; //para prueba de carga de categorias en sesion
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +23,17 @@ Auth::routes();
 //muestra listado de posts
 Route::get('/blog', 'Web\PageController@blog')->name('blog'); //la ruta se va a llamar blog
 
+// * Prueba de redireccion a metodo de controller con previa carga de datos (categorias) en sesion
+/*Route::get('/blog', function() {
+    if (empty(session('categories'))) {
+        session(['count' => $count,'categories' => Category::all()]);
+    }  
+    return redirect()->action('Web\PageController@blog');
+});
+//se necesita una ruta para el metodo del controller
+Route::get('/bloglist', 'Web\PageController@blog');//->name('blog'); //la ruta se va a llamar blog
+*/
+
 //permite ver detalles de un post particular al presionar el link 'Leer mas' de la view
 //posts.blade.php. Recibe parametro 'slug'
 Route::get('/entrada/{slug}', 'Web\PageController@post')->name('post');
@@ -33,4 +44,7 @@ Route::get('/categoria/{slug}', 'Web\PageController@category')->name('category')
 Route::get('/etiqueta/{slug}', 'Web\PageController@tag')->name('tag');
 
 //** Admin (rutas para la parte adminsitrativa) **/
+Route::resource('tags', 'Admin\TagController');
+Route::resource('categories', 'Admin\CategoryController');
+Route::resource('posts', 'Admin\PostController');
 

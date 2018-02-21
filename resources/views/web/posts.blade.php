@@ -5,13 +5,15 @@
     <div class="col-md-8 col-md-offset-2">
         <h1>Lista de artículos publicados</h1>
 
-        {{-- select para filtrar por categoria --}}
+        {{-- Agregado: select para filtrar por categoria --}}
+        {{-- Se usa JS para redireccionar al presionar sobre un item del combobox de categorias --}}
         <select style="max-height:90%;" onchange="javascript:location.href = this.value;">
-            <option value="" disabled selected>Elige una categoría</option>
-         
-        @foreach(session('categories') as $cat)
-            <option value="{{ route('category', $cat->slug) }}">{{ $cat->name }}</option>
-        @endforeach
+            <option value="" disabled selected>Elige una categoría para filtrar artículos</option>
+
+            {{-- @foreach(session('categories') as $cat) --}}{{-- se recuperan las categorias de la sesin --}}
+            @foreach($categories as $cat)
+                <option value="{{ route('category', $cat->slug) }}">{{ $cat->name }}</option>
+            @endforeach
         </select>
         
         {{-- si se fitro por categoria muestro la categoria de filtro --}}
@@ -24,6 +26,7 @@
             <h4>Filtro por etiqueta: {{ $tag->name }}</h4>
         @endif   
         
+        <br>
         <br>
 
         {{-- itero sobre los posts --}}
