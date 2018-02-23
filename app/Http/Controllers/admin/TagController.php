@@ -108,10 +108,20 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) //elimina registro
+    public function destroy(Request $request, $id) //elimina registro
     {
-        $tag = Tag::find($id)->delete();
-
-        return back()->with('info', 'Eliminado correctamente: ' . $tag->name); //retorno al index
+        //si es request ajax
+        if ($request->ajax()) {
+            $tag = Tag::find($id);
+            $tag->delete();
+            $tags_total = Tag::all()->count(); //total de tags
+            return response()->json([
+                'total'=>$tags_total,
+                'message'=>$tag->name . 'fue eliminado correctamente'
+            ]);
+        } else { //eliminacion con reload de pagina
+            $tag = Tag::find($id)->delete();
+            return back()->with('info', 'Eliminado correctamente'); //retorno al index
+        }    
     }
 }

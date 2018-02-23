@@ -14,7 +14,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- css bootstrap -->
-    <link href="{{asset('cssBootstap/bootstrap.min.css')}}" rel="stylesheet">
+    {{-- <link href="{{asset('cssBootstrap/bootstrap.min.css')}}" rel="stylesheet"> --}}
 </head>
 <body>
     <div id="app">
@@ -85,6 +85,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <!-- js bootstrap -->
     <script src="{{asset('jsBootstrap/jquery-3.3.1.min.js')}}"></script> 
-    <script src="{{asset('jsBootstrap/bootstrap.min.js')}}"></script>    
+    <script src="{{asset('jsBootstrap/bootstrap.min.js')}}"></script>
+    @yield('script-ajax') {{-- para eliminacion de tags con ajax. Se usa la @section correspondiente en index.blade.php (de view tags) --}}    
 </body>
 </html>
