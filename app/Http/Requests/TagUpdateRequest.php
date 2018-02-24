@@ -25,7 +25,7 @@ class TagUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'slug'=> 'requierd|unique:tags,slug' . $this->tag //$this->tag indica que evalue todos los registros menos el actual
+            'slug' => 'required|unique:tags,slug,' . $this->tag, //$this->tag indica que evalue todos los registros menos el actual
         ];
     }
 }

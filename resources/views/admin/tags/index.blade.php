@@ -4,15 +4,18 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2"> {{-- offset deja 2 columnas vacias a la izq para que queden centradas las 8 --}}
+
+            <p> {{-- alert para mensajes en eliminacion con ajax --}}
+                <div id="alert" class="alert alert-info"></div> 
+            </p>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Lista de Etiquetas: <span id="tags_total">{{ $tags->count() }} </span> registros 
+                    Lista de Etiquetas: <span id="tags_total">{{ $tags->count() }} </span> registros de la paginación actual
                     <a href="{{ route('tags.create') }}" class="btn btn-sm btn-primary pull-right">
                         Crear
                     </a>
-                    <p>
-                        <div id="alert" class="alert alert-info"></div> {{-- alert para mensajes --}}
-                    </p>
+                    
                 </div>
 
                 <div class="panel-body">
@@ -63,7 +66,7 @@
 </div>
 @endsection
 
-{{-- script para uso de Ajax en eliminacion de etiquetas --}}
+{{-- seccion para linkear script para uso de Ajax en eliminacion de etiquetas --}}
 @section('script-ajax')
     <script src="{{asset('js/ajax-eliminar-tag.js')}}"></script>
 @endsection

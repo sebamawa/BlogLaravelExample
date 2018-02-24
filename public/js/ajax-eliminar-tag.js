@@ -1,3 +1,9 @@
+/**
+ * Codigo jquery para realizar request ajax para eliminar tag de la lista de tags
+ * (en la view index.blade.php).
+ * Ademas actualiza el total de tags en la view anterior y muestra mensaje de ok o error.
+ */
+
 $(document).ready(function(){
     $('#alert').hide(); //oculto div de alerta de mensajes
     $('.btn-delete-ajax').click(function(e){ //capto evento de click de eliminar tag con ajax

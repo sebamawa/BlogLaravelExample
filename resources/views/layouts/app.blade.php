@@ -78,6 +78,36 @@
             </div>
         </nav>
 
+        {{-- Agregado: alert para mostrar mensajes al obtener el response desde el server para cruds --}}
+        @if(session('info')) {{-- info es parametro (clave) de sesion flash --}}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="alert alert-success">
+                            {{ session('info') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        {{-- Agregado: para mostrar errores. $errors es una variable global --}}
+        @if(count($errors))
+            <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        @endif
+
         @yield('content')
     </div>
 
@@ -86,6 +116,11 @@
     <!-- js bootstrap -->
     <script src="{{asset('jsBootstrap/jquery-3.3.1.min.js')}}"></script> 
     <script src="{{asset('jsBootstrap/bootstrap.min.js')}}"></script>
-    @yield('script-ajax') {{-- para eliminacion de tags con ajax. Se usa la @section correspondiente en index.blade.php (de view tags) --}}    
+
+    {{-- Agregado: para carga de tag <script> (en index.blade.php de view tag), para cargar 
+        codigo js con ajax. Se usa la @section correspondiente en index.blade.php --}}    
+    @yield('script-ajax') {{-- colocamos estas secciones para colocar js personalizado en la view que se quiera --}}
+
+    @yield('scripts')
 </body>
 </html>

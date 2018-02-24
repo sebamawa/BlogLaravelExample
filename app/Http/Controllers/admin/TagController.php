@@ -37,7 +37,7 @@ class TagController extends Controller
      */
     public function create() //metodo para mostrar formulario
     {
-        return view('admin.tags.crate');
+        return view('admin.tags.create');
     }
 
     /**
@@ -50,7 +50,8 @@ class TagController extends Controller
     {
         //validacion de campos con request
 
-        $tag = Tag::create($request->all()); //se aceptan datos definidos en el modelo Tag, en array fillable
+        $tag = Tag::create($request->all()); //se aceptan datos definidos en el modelo 
+                //Tag, en array fillable y se validan con objeto $request->all()
         
         return redirect()->route('tags.edit', $tag->id)
             ->with('info', "Etiqueta creada con éxito"); //para mostrar mensaje
@@ -89,15 +90,14 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TatUpdateRequest $request, $id) //atualiza datos de bd
+    public function update(TagUpdateRequest $request, $id) //atualiza datos de bd
     {
         //validacion de campos con request
 
         $tag = Tag::find($id);
 
-        $tag->fill($request->all)->save();
-
-        //retorno a formulario de edicion
+        $tag->fill($request->all())->save();
+        //retorno a formulario de edicion con session flash cargada con mensaje de exito
         return redirect()->route('tags.edit', $tag->id)
             ->with('info', "Etiqueta actualizada con éxito");        
     }
@@ -117,10 +117,13 @@ class TagController extends Controller
             $tags_total = Tag::all()->count(); //total de tags
             return response()->json([
                 'total'=>$tags_total,
-                'message'=>$tag->name . 'fue eliminado correctamente'
+                'message'=>$tag->name . ' fue eliminado correctamente'
             ]);
         } else { //eliminacion con reload de pagina
             $tag = Tag::find($id)->delete();
+            //con el metodo with() se guarda en sesion FLASH el par ('info', 'string')
+            //Por sesion flash se entiende que el parametro se desvincula de la sesion una vez 
+            //se carga la pagina con el response.
             return back()->with('info', 'Eliminado correctamente'); //retorno al index
         }    
     }
