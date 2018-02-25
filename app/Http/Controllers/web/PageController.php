@@ -19,7 +19,7 @@ class PageController extends Controller
         $this->categories = Category::all();
     }
 
-    //pasa a la view listado de posts
+    //pasa a la view listado de posts (son vistos por visitantes o usuarios)
     public function blog() {
         $posts = Post::orderBy('id', 'DESC')->where('status', 'PUBLISHED')->paginate(3);
 

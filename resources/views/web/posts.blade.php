@@ -10,7 +10,7 @@
         <select style="max-height:90%;" onchange="javascript:location.href = this.value;">
             <option value="" disabled selected>Elige una categoría para filtrar artículos</option>
 
-            {{-- @foreach(session('categories') as $cat) --}}{{-- se recuperan las categorias de la sesin --}}
+            {{-- @foreach(session('categories') as $cat) --}}{{-- se recuperan las categorias de la sesion --}}
             @foreach($categories as $cat)
                 <option value="{{ route('category', $cat->slug) }}">{{ $cat->name }}</option>
             @endforeach

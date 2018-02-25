@@ -5,14 +5,10 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2"> {{-- offset deja 2 columnas vacias a la izq para que queden centradas las 8 --}}
 
-            <p> {{-- alert para mensajes en eliminacion con ajax --}}
-                <div id="alert" class="alert alert-info"></div> 
-            </p>
-
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Lista de Etiquetas: <span id="tags_total">{{ $tags->count() }} </span> registros de la paginación actual (o total de la tabla tags)
-                    <a href="{{ route('tags.create') }}" class="btn btn-sm btn-primary pull-right">
+                    Lista de mis Entradas: <span id="posts_total">{{ $posts->count() }} </span> registros de la paginación actual
+                    <a href="{{ route('posts.create') }}" class="btn btn-sm btn-primary pull-right">
                         Crear
                     </a>
                     
@@ -29,29 +25,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($tags as $tag)
+                            @foreach($posts as $post)
                             <tr>
-                                <td>{{ $tag->id }}</td>
-                                <td>{{ $tag->name }}</td>
+                                <td>{{ $post->id }}</td>
+                                <td>{{ $post->name }}</td>
                                 <td width="10px">
-                                    <a href="{{ route('tags.show', $tag->id) }}" class="btn btn-sm btn-default">Ver</a>
+                                    <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-default">Ver</a>
                                 </td>
                                 <td width="10px">
-                                    <a href="{{ route('tags.edit', $tag->id) }}" class="btn btn-sm btn-default">Editar</a>
+                                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-default">Editar</a>
                                 </td>
                                 <td width="10px">
                                     {{-- Se usa form para eliminar contra url por temas de seguridad.
                                     Version con reload de pagina (sin ajax) --}}
-                                    {!! Form::open(['route' => ['tags.destroy', $tag->id], 'method' => 'DELETE']) !!}
+                                    {!! Form::open(['route' => ['posts.destroy', $post->id], 'method' => 'DELETE']) !!}
                                         <button class="btn btn-sm btn-danger">
                                             Eliminar
                                         </button>                           
-                                    {!! Form::close() !!}
-                                </td>
-                                {{-- From para eliminar tags con ajax --}}
-                                <td width="100px">
-                                    {!! Form::open(['route' => ['tags.destroy', $tag->id], 'method'=>'DELETE']) !!}
-                                        <a href="#" class="btn-delete-ajax">Eliminar Ajax</a>
                                     {!! Form::close() !!}
                                 </td>
                             </tr>
@@ -59,7 +49,7 @@
                         </tbody>   
                     </table>     	
 
-                    {{ $tags->render() }}
+                    {{ $posts->render() }}
                 </div>
             </div>
         </div>
@@ -67,7 +57,3 @@
 </div>
 @endsection
 
-{{-- seccion para linkear script para uso de Ajax en eliminacion de etiquetas --}}
-@section('script-ajax')
-    <script src="{{asset('js/ajax-eliminar-tag.js')}}"></script>
-@endsection

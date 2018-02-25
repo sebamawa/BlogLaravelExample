@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Category;
+use App\category;
+use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoryController extends Controller
 {
@@ -20,9 +22,12 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() //metodo para listar etiquetas
     {
-        return 'index de CategoryController';
+        $categories = Category::orderBy('id', 'DESC')->paginate();
+
+        //dd($categories); //helper para ver que tiene una variable
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -30,9 +35,9 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create() //metodo para mostrar formulario
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -41,9 +46,15 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request) //metodo para salvar datos
     {
-        //
+        //validacion de campos con request
+
+        $category = Category::create($request->all()); //se aceptan datos definidos en el modelo 
+                //Category, en array fillable y se validan con objeto $request->all()
+        
+        return redirect()->route('categories.edit', $category->id)
+            ->with('info', "Categoría creada con éxito"); //para mostrar mensaje
     }
 
     /**
@@ -52,9 +63,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id) //ver detalle de 1 etiqueta
     {
-        //
+        $category = Category::find($id);
+
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -63,9 +76,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id) //muestra vista para actualizar
     {
-        //
+        $category = Category::find($id);
+
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -75,9 +90,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryUpdateRequest $request, $id) //atualiza datos de bd
     {
-        //
+        //validacion de campos con request
+
+        $category = Category::find($id);
+
+        $category->fill($request->all())->save();
+        //retorno a formulario de edicion con session flash cargada con mensaje de exito
+        return redirect()->route('categories.edit', $category->id)
+            ->with('info', "Categoría actualizada con éxito");        
     }
 
     /**
@@ -86,8 +108,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id) //elimina registro
     {
-        //
+        $category = Category::find($id)->delete();
+        //con el metodo with() se guarda en sesion FLASH el par ('info', 'string')
+        //Por sesion flash se entiende que el parametro se desvincula de la sesion una vez 
+        //se carga la pagina con el response.
+        return back()->with('info', 'Eliminado correctamente'); //retorno al index      
     }
 }

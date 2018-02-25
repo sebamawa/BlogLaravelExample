@@ -45,7 +45,8 @@ Route::get('/etiqueta/{slug}', 'Web\PageController@tag')->name('tag');
 
 //*************************** Admin (rutas para la parte adminsitrativa) ***************************/
 
-//crds de tags, categorias y posts
+//cruds de tags, categorias y posts. Con cad resource ya se generan 7 rutas para cada
+//nombre de url 
 Route::resource('tags', 'Admin\TagController');
 Route::resource('categories', 'Admin\CategoryController');
 Route::resource('posts', 'Admin\PostController');
