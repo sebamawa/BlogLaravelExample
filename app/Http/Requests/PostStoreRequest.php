@@ -23,10 +23,21 @@ class PostStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //se usan campos (algunos o todos) del array fillable del modelo (Tag)
+        //return [
+        $rules = [    
             'name' => 'required',
-            'slug' => 'required|unique:categories,slug', //verifico campo que sea obligatorio y que sea unico en la tabla tags de la bd
+            'slug' => 'required|unique:posts,slug', 
+            'user_id' => 'required|integer',
+            'category_id' => 'required|integer',
+            'tags' => 'required|array', //las etiquetas son requeridas como array
+            'body' => 'required',
+            'status' => 'required|in:DRAFT,PUBLISHED'
         ];
+
+        //imagen del articulo opcional. Si se selecciona imagen lo agrego al array $rules
+        if ($this->get('file'))
+            $rules = array_merge($rules, ['file'=>'mimes:jpg.jpeg,png']);
+
+        return $rules;    
     }
 }

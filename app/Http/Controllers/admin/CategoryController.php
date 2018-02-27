@@ -54,7 +54,7 @@ class CategoryController extends Controller
                 //Category, en array fillable y se validan con objeto $request->all()
         
         return redirect()->route('categories.edit', $category->id)
-            ->with('info', "Categoría creada con éxito"); //para mostrar mensaje
+            ->with('info', "Categoría creada con éxito"); //para mostrar mensaje (se guada en sesion flash)
     }
 
     /**

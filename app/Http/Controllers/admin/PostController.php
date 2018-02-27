@@ -11,6 +11,8 @@ use App\Tag;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Requests\PostUpdateRequest;
 
+use Illuminate\Support\Facades\Storage; //para almacenar imagenes en el server
+
 class PostController extends Controller
 {
 
@@ -42,12 +44,13 @@ class PostController extends Controller
      */
     public function create() //metodo para mostrar formulario
     {
-        //recupero nombre y id de categorias para seleccionar desde form de crear 
+        //recupero nombre e id de categorias para seleccionar desde form de crear 
         //articulo mediante un tag select
         $categories = Category::orderBy('name', 'ASC')
-            ->pluck('name', 'id'); //pluck es un 'select' 
+            ->pluck('name', 'id'); //pluck recupera los campos especificos. Cuando tiene 2 parametros,
+               //en este caso convierte a array con claves 'id' y valores 'name' los registros obtenidos     
 
-        //recuepro tags para mostrarlos para selecccionar en checkboxes en el form de articulo    
+        //recupero tags para mostrarlos para selecccionar en checkboxes en el form de articulo    
         $tags = Tag::orderBy('name', 'ASC')->get();    
 
         return view('admin.posts.create', compact('categories', 'tags')); 
@@ -61,10 +64,29 @@ class PostController extends Controller
      */
     public function store(PostStoreRequest $request) //metodo para salvar datos
     {
-        //validacion de campos con request
-
+        //creo un post
         $post = Post::create($request->all()); //se aceptan datos definidos en el modelo 
                 //Post, en array fillable y se validan con objeto $request->all()
+
+        //IMAGE manejo
+
+        //si se envio imagen la almaceno en el server
+        if ($request->file('file')) { 
+            //ruta donde guardar la imagen
+            //lado derecho: almacena en el disco (en la carpeta public definida en filesystems.php)
+            //en la carpeta image (se crea si no existe) la imagen que se envio desde el form.
+            //Esto genero una ruta relativa (image/xxx.jpg)
+            $path = Storage::disk('public')->put('image', $request->file('file'));
+            //El helper asset crea la ruta completa (http://dominio/image/xxx.jpg),
+            //y se actualiza el post
+            $post->fill(['file'=> asset($path)])->save();
+        }   
+        
+        //ETIQUETAS
+        //sync() se usa para sincronizar las relaciones (si se mandan 3 etiquetas, se crean 3 relaciones)
+        //otros metodos relacionados con sync: attach y dettach
+        //$post->tags()->sync($request->get('tags'));
+        $post->tags()->attach($request->get('tags')); //attach() crea una nueva relacion
         
         return redirect()->route('posts.edit', $post->id)
             ->with('info', "Entrada creada con éxito"); //para mostrar mensaje
@@ -92,7 +114,7 @@ class PostController extends Controller
     public function edit($id) //muestra vista para actualizar
     {
         $categories = Category::orderBy('name', 'ASC')
-            ->pluck('name', 'id'); //pluck es un 'select' 
+            ->pluck('name', 'id'); 
 
         $tags = Tag::orderBy('name', 'ASC')->get(); 
 
@@ -115,6 +137,23 @@ class PostController extends Controller
         $post = Post::find($id);
 
         $post->fill($request->all())->save();
+
+        //IMAGE manejo
+        if ($request->file('file')) { //si enviamos archivo desde el form
+            //ruta donde guardar la imagen
+            //lado derecho: almacena en el disco (en la carpeta public definida en filesystems.php)
+            //en la carpeta image (se crea si no existe) la imagen que se envio desde el form.
+            //Esto genero una ruta relativa (image/xxx.jpg)
+            $path = Storage::disk('public')->put('image', $request->file('file'));
+            //El helper asset crea la ruta completa (http://dominio/image/xxx.jpg)
+            $post->fill(['file'=> asset($path)])->save();
+        }   
+        
+        //ETIQUETAS
+        //sync() se usa para sincronizar las relaciones (si se mandan 3 etiquetas, se crean 3 relaciones)
+        //con sync() se combinan attach() y dettach()
+        $post->tags()->sync($request->get('tags'));
+        
         //retorno a formulario de edicion con session flash cargada con mensaje de exito
         return redirect()->route('posts.edit', $post->id)
             ->with('info', "Entrada actualizada con éxito");        

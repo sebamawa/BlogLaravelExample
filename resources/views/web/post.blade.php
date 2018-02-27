@@ -18,7 +18,7 @@
                 {{ $post->excerpt }} <!-- Extracto del post. Al presionar sobre el link permite ver detalles --> 
                 <hr>
                 <!-- notacion para poner codigo html (no queremos escapar ese codigo) -->
-                {{!! $post->body !!}}
+                {!! $post->body !!}
                 <hr>
                 Etiquetas
                 @foreach($post->tags as $tag) <!-- se llama metodo tags() de Post -->

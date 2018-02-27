@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     
                     {{-- ver lo del model. El form se carga con los campos del category recibido --}}
-                    {!! Form::model($post, ['route'=>['posts.update', $post->id], 'method'=>'PUT']) !!}
+                    {!! Form::model($post, ['route'=>['posts.update', $post->id], 'method'=>'PUT', 'files'=>true]) !!}
 
                         @include('admin.posts.partials.form')
                         
