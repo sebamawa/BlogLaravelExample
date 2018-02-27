@@ -65,20 +65,22 @@ class PostController extends Controller
     public function store(PostStoreRequest $request) //metodo para salvar datos
     {
         //creo un post
-        $post = Post::create($request->all()); //se aceptan datos definidos en el modelo 
-                //Post, en array fillable y se validan con objeto $request->all()
+        $post = Post::create($request->all()); //Asignacion en masa de atributos. Se aceptan datos definidos 
+            //en el modelo Post, en array fillable y se validan con objeto $request->all(), para luego 
+            //insertar el registro en la BD. Retorna una instancia del modelo
 
         //IMAGE manejo
 
         //si se envio imagen la almaceno en el server
         if ($request->file('file')) { 
             //ruta donde guardar la imagen
-            //lado derecho: almacena en el disco (en la carpeta public definida en filesystems.php)
+            //lado derecho de asignacion: almacena en el disco (en la carpeta public definida en filesystems.php)
             //en la carpeta image (se crea si no existe) la imagen que se envio desde el form.
             //Esto genero una ruta relativa (image/xxx.jpg)
             $path = Storage::disk('public')->put('image', $request->file('file'));
+
+            //agrego la imagen a la instancia del modelo y actualizo registro en la bd
             //El helper asset crea la ruta completa (http://dominio/image/xxx.jpg),
-            //y se actualiza el post
             $post->fill(['file'=> asset($path)])->save();
         }   
         
@@ -101,6 +103,9 @@ class PostController extends Controller
     public function show($id) //ver detalle de 1 etiqueta
     {
         $post = Post::find($id);
+        //se usa politica de seguridad PostPolicy, en particular el metodo pass() de dicha clase
+        //que verifica si el post pertenece al usaurio ( id(User) = usuario_id(Post) )
+        $this->authorize('pass', $post);
 
         return view('admin.posts.show', compact('post'));
     }
@@ -113,12 +118,15 @@ class PostController extends Controller
      */
     public function edit($id) //muestra vista para actualizar
     {
+        $post = Post::find($id);
+        //se usa politica de seguridad PostPolicy, en particular el metodo pass() de dicha clase
+        //que verifica si el post pertenece al usaurio ( id(User) = usuario_id(Post) )
+        $this->authorize('pass', $post);
+
         $categories = Category::orderBy('name', 'ASC')
             ->pluck('name', 'id'); 
 
         $tags = Tag::orderBy('name', 'ASC')->get(); 
-
-        $post = Post::find($id);
 
         return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
@@ -135,6 +143,7 @@ class PostController extends Controller
         //validacion de campos con request
 
         $post = Post::find($id);
+        $this->authorize('pass', $post); //solo se pueden actualizar posts del usuario logueado
 
         $post->fill($request->all())->save();
 
@@ -167,7 +176,11 @@ class PostController extends Controller
      */
     public function destroy(Request $request, $id) //elimina registro
     {
-        $post = Post::find($id)->delete();
+        //$post = Post::find($id)->delete();
+        $post = Post::find($id);
+        $this->authorize('pass', $post); //solo permito eliminar post del usuario logueado (PostPolicy)
+        $post->delete();
+
         //con el metodo with() se guarda en sesion FLASH el par ('info', 'string')
         //Por sesion flash se entiende que el parametro se desvincula de la sesion una vez 
         //se carga la pagina con el response.

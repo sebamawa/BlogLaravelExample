@@ -36,7 +36,7 @@ class PostStoreRequest extends FormRequest
 
         //imagen del articulo opcional. Si se selecciona imagen lo agrego al array $rules
         if ($this->get('file'))
-            $rules = array_merge($rules, ['file'=>'mimes:jpg.jpeg,png']);
+            $rules = array_merge($rules, ['file'=>'mimes:jpg,jpeg,png']);
 
         return $rules;    
     }
